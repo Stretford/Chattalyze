@@ -20,13 +20,7 @@ def query(sqlstr):
     result = []
     rows = cu.execute(sqlstr)
     num = 0
-    for row in rows.fetchall():
-        d = json.loads(row[0])
-        d['token'] = num
-        result.append(d)
-        num += 1
-    conn.close()
-    return result
+    return rows.fetchall()
 
 
 def execute(sqlstr):
@@ -35,5 +29,19 @@ def execute(sqlstr):
     cu.execute(sqlstr)
     conn.commit()
     conn.close()
+
+
+def verify(username, password):
+    str = "select password from users where username = '" + username + "'"
+    result = query(str)
+    if result.__len__() == 0:
+        return False
+    result = query(str)[0][0]
+    if result == password:
+        return True
+    return False
+
+
+#print(verify('', 'abc123'))
 
 

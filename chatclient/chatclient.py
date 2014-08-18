@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 import asyn
 import socket
+import json
 
 app = Flask(__name__)
 
@@ -16,8 +17,10 @@ def login():
 def index():
     #addr = ('timmiige.gicp.net', 52989)
     addr = ('localhost', 8888)
-    asyn.ds_asyncore(addr, callback, 'test', timeout=5)
-    asyn.ds_asyncore(addr, callback, 'second time', timeout=5)
+    data = {'function': 'login', 'username': 'sam', 'password': 'abc123'}
+    data = json.dumps(data)
+    #asyn.ds_asyncore(addr, callback, 'test', timeout=5)
+    asyn.ds_asyncore(addr, callback, data, timeout=5)
     #sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     #sock.connect(addr)
     #sock.send('aaa')

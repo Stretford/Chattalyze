@@ -2,6 +2,7 @@ import socket
 import select
 import Queue
 import json
+import DB
 
 __author__ = 'stretford'
 
@@ -14,6 +15,7 @@ def run():
     inputs = [server]
     outputs = []
     message_queues = {}
+    user_connections = {}
     timeout = 0
 
     while True:
@@ -35,9 +37,16 @@ def run():
                 data = s.recv(1024)
                 if data:
                     print "received:", data, "from ", s.getpeername()
-                    #print "  connection:", connection
                     decode = json.loads(data)
-                    sender = decode['sender']
+                    function = decode['function']
+                    if function == 'login':
+                        username = decode['username']
+                        password = decode['password']
+                        if username and password and DB.verify(username, password):
+                            print "'", username, "' logged in from ", s.getpeername()
+                            user_connections['username'] = s
+                    elif function == 'send':
+                        pass
 
                     message_queues[s].put(data)
                     if s not in outputs:
