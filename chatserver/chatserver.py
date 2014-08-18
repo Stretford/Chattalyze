@@ -3,6 +3,7 @@ import select
 import Queue
 import json
 import DB
+import hashlib, time
 
 __author__ = 'stretford'
 
@@ -31,6 +32,7 @@ def run():
                 connection, client_address = server.accept()
                 print "connection from ", client_address
                 connection.setblocking(0)
+                #connection.send('ready for connection')
                 inputs.append(connection)
                 message_queues[connection] = Queue.Queue()
             else:
@@ -45,6 +47,9 @@ def run():
                         if username and password and DB.verify(username, password):
                             print "'", username, "' logged in from ", s.getpeername()
                             user_connections['username'] = s
+                            token = hashlib.md5(str(time.time())).hexdigest()
+                            reply = {'function': 'token', 'token': token}
+                            s.send(json.dumps(reply))
                     elif function == 'send':
                         pass
 
@@ -52,6 +57,8 @@ def run():
                     if s not in outputs:
                         outputs.append(s)
                 else:
+                    #pass
+
                     print "closing ", client_address
                     if s in outputs:
                         outputs.remove(s)
@@ -67,7 +74,7 @@ def run():
                 outputs.remove(s)
             else:
                 print "sending ", next_msg, " to ", s.getpeername()
-                s.send(next_msg)
+                #s.send(next_msg)
 
         for s in exceptional:
             print "exception condition on ", s.getpeername()

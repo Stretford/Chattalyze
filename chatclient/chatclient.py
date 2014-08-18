@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import asyn
 import socket
 import json
+import select
 
 app = Flask(__name__)
 
@@ -9,23 +10,27 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        return redirect(url_for('index'))
+        addr = ('localhost', 8888)
+        username = request.form['username']
+        password = request.form['password']
+        data = {'function': 'login', 'username': username, 'password': password}
+        data = json.dumps(data)
+        temp = asyn.ds_asyncore(addr, callback, data, timeout=5)
+        print temp
+        reply = json.loads(temp)
+        print reply['function']
+        if reply['function'] == 'token':
+            #print redirect(url_for('index'))
+            return 'logged in'
+
     html = render_template('login.html')
     return html
 
 @app.route('/index', methods=['GET', 'POST'])
 def index():
-    #addr = ('timmiige.gicp.net', 52989)
-    addr = ('localhost', 8888)
-    data = {'function': 'login', 'username': 'sam', 'password': 'abc123'}
-    data = json.dumps(data)
-    #asyn.ds_asyncore(addr, callback, 'test', timeout=5)
-    asyn.ds_asyncore(addr, callback, data, timeout=5)
-    #sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    #sock.connect(addr)
-    #sock.send('aaa')
-    #sock.close()
-    return 'logged in'
+    html = render_template('index.html')
+    return html
+
 
 def callback(response_data):
     print response_data

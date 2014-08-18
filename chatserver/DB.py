@@ -1,5 +1,5 @@
 import sqlite3
-import json
+import json, hashlib, time
 
 
 __author__ = 'Stretford'
@@ -41,7 +41,7 @@ def verify(username, password):
         return True
     return False
 
-
-#print(verify('', 'abc123'))
+temp = str(time.time())
+print (hashlib.md5(temp).hexdigest())
 
 

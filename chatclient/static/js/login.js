@@ -5,8 +5,9 @@
 $('#login').click(function(){
     login_info = {'username': $('#login_username').val(), 'password': $('#login_password').val()}
     $.post('/', login_info).done(function(msg){
-        alert('Loggin in')
-        window.location.href="/index"
+        if(msg == 'logged in')
+            window.location.href = "/index"
+
     })
 })
 
