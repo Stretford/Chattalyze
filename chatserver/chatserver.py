@@ -44,11 +44,13 @@ def run():
                     if function == 'login':
                         username = decode['username']
                         password = decode['password']
-                        if username and password and DB.verify(username, password):
+                        userID = DB.verify(username, password)
+                        if username and password and userID > 0:
                             print "'", username, "' logged in from ", s.getpeername()
-                            user_connections['username'] = s
+                            user_connections[str(userID)] = s
                             token = hashlib.md5(str(time.time())).hexdigest()
-                            reply = {'function': 'token', 'token': token}
+                            friends = DB.get_friends(userID)
+                            reply = {'function': 'token', 'token': token, 'friends': friends}
                             s.send(json.dumps(reply))
                     elif function == 'send':
                         pass

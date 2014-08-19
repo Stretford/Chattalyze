@@ -5,7 +5,9 @@ import json
 import select
 
 app = Flask(__name__)
-
+LOGGER = {}
+FRIENDS = []
+TOKEN = ''
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
@@ -19,8 +21,13 @@ def login():
         print temp
         reply = json.loads(temp)
         print reply['function']
+        global LOGGER, FRIENDS, TOKEN
         if reply['function'] == 'token':
-            #print redirect(url_for('index'))
+            LOGGER['username'] = username
+            FRIENDS = reply['friends']
+            userid = FRIENDS[len(FRIENDS) - 1][0]
+            LOGGER['userid'] = userid
+            TOKEN = reply['token'] + '_' + username + '_' + str(userid)
             return 'logged in'
 
     html = render_template('login.html')
@@ -28,7 +35,8 @@ def login():
 
 @app.route('/index', methods=['GET', 'POST'])
 def index():
-    html = render_template('index.html')
+    print "TOKEN:", FRIENDS
+    html = render_template('index.html', friends=FRIENDS, logger=LOGGER, token=TOKEN)
     return html
 
 

@@ -32,16 +32,28 @@ def execute(sqlstr):
 
 
 def verify(username, password):
-    str = "select password from users where username = '" + username + "'"
-    result = query(str)
+    sqlstr = "select ID, password from users where username = '" + username + "'"
+    print sqlstr
+    result = query(sqlstr)
     if result.__len__() == 0:
-        return False
-    result = query(str)[0][0]
-    if result == password:
-        return True
-    return False
+        return -1
+    psw = result[0][1]
+    id = result[0][0]
+    if psw == password:
+        return id
+    return -1
 
-temp = str(time.time())
-print (hashlib.md5(temp).hexdigest())
+
+def get_friends(user):
+    sqlstr = "select id,username from users where id in(select user1 from relations where user2 = " + str(user) + " union select user2 from relations where user1 = " + str(user) + ")"
+    result = query(sqlstr)
+    tmp = json.dumps(result[0])
+    #result = json.loads(tmp)
+    result.append((user, user))
+    return result
+
+
+#friends = get_friends(1)
+print (get_friends(1))
 
 
