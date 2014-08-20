@@ -8,44 +8,49 @@ app = Flask(__name__)
 LOGGER = {}
 FRIENDS = []
 TOKEN = ''
-TEST = ['bb']
+RECEIVED_DATA = []
+ADDR = ('localhost', 8888)
+LOCAL_RECEIVING_PORTAL = ()
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
-    thread.start_new_thread(timer, (1, 1))
+    global LOCAL_RECEIVING_PORTAL
     if request.method == 'POST':
-        addr = ('localhost', 8888)
+        #local_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         username = request.form['username']
         password = request.form['password']
+
         data = {'function': 'login', 'username': username, 'password': password}
         data = json.dumps(data)
-        temp = asyn.ds_asyncore(addr, callback, data, timeout=5)
+        print data
+        temp = asyn.ds_asyncore(ADDR, callback, data, timeout=5)
         print temp
         reply = json.loads(temp)
         print reply
         global LOGGER, FRIENDS, TOKEN
         if reply['function'] == 'token':
+            #thread.start_new_thread(asyn_receive, (local_socket, ''))
             LOGGER['username'] = username
             FRIENDS = reply['friends']
             userid = FRIENDS[-1][0]
             LOGGER['userid'] = userid
             TOKEN = reply['token'] + '_' + username + '_' + str(userid)
+            thread.start_new_thread(asyn_receive, (TOKEN, ''))
             return 'logged in'
 
-    html = render_template('login.html', test=TEST)
+    html = render_template('login.html')
     return html
 
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         print 'here'
-        addr = ('localhost', 8888)
         msg = request.form['msg']
         to = request.form['to']
         data = {'function': 'send', 'token': TOKEN, 'msg': msg, 'to': to}
         data = json.dumps(data)
         print "before sending:", data
-        temp = asyn.ds_asyncore(addr, callback, data, timeout=5)
+        temp = asyn.ds_asyncore(ADDR, callback, data, timeout=5)
         print(temp)
         return temp
 
@@ -53,11 +58,27 @@ def index():
     return html
 
 
+
+def asyn_receive(token, useless):
+    global LOCAL_RECEIVING_PORTAL
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect(ADDR)
+    msg = {"function": "appendADDR", "addr": s.getsockname(), "token": token}
+    s.send(json.dumps(msg))
+    print "listening at:", s.getsockname()
+    aaa = True
+    while aaa:
+        data = s.recv(1024)
+        if data:
+            RECEIVED_DATA.append(data)
+            print "received from server:", data
+
+
+
+
 def callback(response_data):
     print response_data
 
-def timer(no, interval):
-    TEST.append('aa')
 
 if __name__ == '__main__':
     app.run(debug=True, port=7777)

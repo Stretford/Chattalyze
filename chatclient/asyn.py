@@ -4,6 +4,7 @@ import socket, select, sys
 import json
 
 
+
 def ds_asyncore(addr, callback, msg, timeout=5):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect(addr)
@@ -23,5 +24,4 @@ def ds_asyncore(addr, callback, msg, timeout=5):
     else:
         s.close()
         return ''
-
 

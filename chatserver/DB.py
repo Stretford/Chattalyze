@@ -53,7 +53,9 @@ def get_friends(user):
     return result
 
 
-test = [1,2,3,4,5]
-print (test[-1])
+v = (u'127.0.0.1', 56955)
+c = ('127.0.0.1', 56958)
+print (v == c)
+
 
 

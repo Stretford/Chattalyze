@@ -39,9 +39,9 @@ $('#send_msg').click(function(){
     //$('.ui.large.message').html($('.ui.large.message').html() + str)
     */
     $('#history').append("<div>" + str + "</div")
+    msg = {msg: $('#input')[0].value, to:userid}
     $('#input')[0].value = ''
     $(this).addClass('disabled')
-    msg = {msg: $('#input')[0].value, to:userid}
 
     $.post('/index', msg).done(function(msg){
 

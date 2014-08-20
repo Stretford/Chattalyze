@@ -11,6 +11,8 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.setblocking(False)
 server.bind(('127.0.0.1', 8888))
 user_connections = {}
+pending_msg = {}
+TOKEN = {}
 
 '''
 def send_data(addr, msg, sender, receiver):
@@ -25,16 +27,15 @@ def send_data(addr, msg, sender, receiver):
         server.send(json.dumps(data))
 '''
 
-def run():
 
+def run():
     server.listen(5)
     inputs = [server]
     outputs = []
     message_queues = {}
-    pending_msg = {}
 
     while True:
-        print 'waiting for next event...'
+        #print 'waiting for next event...'
         readable, writable, exceptional = select.select(inputs, outputs, inputs)
 
         if not (readable or writable or exceptional):
@@ -42,7 +43,6 @@ def run():
             break
 
         for s in readable:
-            print "s:", s
             if s is server:
                 connection, client_address = server.accept()
                 print "connection from ", client_address
@@ -51,11 +51,21 @@ def run():
                 inputs.append(connection)
                 message_queues[connection] = Queue.Queue()
             else:
+                print "user_connections:", user_connections
+                for k, v in user_connections.items():
+                    print v, s.getpeername()
+                    if v == s.getpeername():
+                        msgs = pending_msg[v]
+                        for msg in msgs:
+                            s.send(msg)
+
+                print "s:", s.getpeername()
                 data = s.recv(1024)
                 if data:
                     print "received:", data, "from ", s.getpeername()
                     decode = json.loads(data)
                     function = decode['function']
+
                     if function == 'login':
                         username = decode['username']
                         password = decode['password']
@@ -63,32 +73,35 @@ def run():
                         if username and password and userID > 0:
                             print "'", username, "' logged in from ", s.getpeername()
                             token = hashlib.md5(str(time.time())).hexdigest()
-                            user_connections[str(userID)] = (s, token)
+                            TOKEN[str(userID)] = token
                             friends = DB.get_friends(userID)
                             reply = {'function': 'token', 'token': token, 'friends': friends}
                             s.send(json.dumps(reply))
+
+                    elif function == 'appendADDR':
+                        token = decode['token']
+                        token_received = token.split('_')[0]
+                        userid_received = token.split('_')[2]
+                        if TOKEN[str(userid_received)] != token_received:
+                            s.send('authentication failed')
+                        else:
+                            sending_addr = (decode['addr'][0], decode['addr'][1])
+                            user_connections[str(userID)] = sending_addr
+
                     elif function == 'send':
-                        received = decode['token']
-                        token_received = received.split('_')[0]
-                        userid_received = received.split('_')[2]
-                        username_received = received.split('_')[1]
-                        if user_connections[str(userid_received)][1] != token_received:
+                        token = decode['token']
+                        token_received = token.split('_')[0]
+                        userid_received = token.split('_')[2]
+                        username_received = token.split('_')[1]
+                        if TOKEN[str(userid_received)] != token_received:
                             s.send('authentication failed')
                         else:
                             to = str(decode['to'])
                             msg = decode['msg']
-                            print "user_connections:", user_connections
-                            if to and to in user_connections:
-                                data = {"from": username_received, "to": to, "msg": msg}
-                                conn = user_connections[to][0]
-                                conn.send(json.dumps(data))
-                                print "transferring ", msg, " to ", conn.getpeername()
+                            if to in pending_msg:
+                                pending_msg[to].append(msg)
                             else:
-                                if to in pending_msg:
-                                    pending_msg[to].append(msg)
-                                else:
-                                    pending_msg[to] = [msg]
-                            s.send('success')
+                                pending_msg[to] = [msg]
                             print "pending messages: ", pending_msg
 
                     message_queues[s].put(data)
@@ -135,4 +148,6 @@ def run():
     connection.close()
     sock.close()
     '''
+
+
 run()
