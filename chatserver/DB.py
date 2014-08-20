@@ -53,7 +53,7 @@ def get_friends(user):
     return result
 
 
-#friends = get_friends(1)
-print (get_friends(1))
+test = [1,2,3,4,5]
+print (test[-1])
 
 

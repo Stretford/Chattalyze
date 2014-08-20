@@ -27,7 +27,7 @@ function checkempty(){
 
 
 $('#send_msg').click(function(){
-    $('.ui.large.message').text($('.ui.large.message').text().replace('No Chatting History...', ''))
+    //$('.ui.large.message').text($('.ui.large.message').text().replace('No Chatting History...', ''))
     var userid = $('#online-friends')[0].className.split('_')[2]
     var token = $('#online-friends')[0].className.split('_')[0]
     var username = $('#online-friends')[0].className.split('_')[1]
@@ -41,4 +41,10 @@ $('#send_msg').click(function(){
     $('#history').append("<div>" + str + "</div")
     $('#input')[0].value = ''
     $(this).addClass('disabled')
+    msg = {msg: $('#input')[0].value, to:userid}
+
+    $.post('/index', msg).done(function(msg){
+
+
+    })
 })
