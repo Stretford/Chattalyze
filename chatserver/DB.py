@@ -1,5 +1,6 @@
 import sqlite3
 import json, hashlib, time
+from flask import jsonify
 
 
 __author__ = 'Stretford'
@@ -44,6 +45,15 @@ def verify(username, password):
     return -1
 
 
+def get_name_by_id(id):
+    sqlstr = "select username from users where id = " + id
+    result = query(sqlstr)
+    if result.__len__() == 0:
+        return ''
+    result = query(sqlstr)[0][0]
+    return result
+
+
 def get_friends(user):
     sqlstr = "select id,username,token from users where id in(select user1 from relations where user2 = " + str(user) + " union select user2 from relations where user1 = " + str(user) + ")"
     result = query(sqlstr)
@@ -63,9 +73,8 @@ def get_users():
 
 
 
-v = (u'127.0.0.1', 56955)
-c = ('127.0.0.1', 56958)
-print get_users()
+a = {'a': 123}
+print json.loads(json.dumps(a))
 
 
 

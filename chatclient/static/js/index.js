@@ -1,6 +1,8 @@
 /**
  * Created by applelab1 on 8/19/14.
  */
+var auto_receive;
+
 $(function(){
     $('#canvas').hide()
     $("#send_msg").addClass('disabled')
@@ -32,6 +34,11 @@ function append_msg(username, msg){
 
 }
 
+$('#cancel').click(function(){
+    clearTimeout(auto_receive)
+    alert('cancelled!')
+})
+
 
 $('#send_msg').click(function(){
     //$('.ui.large.message').text($('.ui.large.message').text().replace('No Chatting History...', ''))
@@ -58,17 +65,15 @@ $('#send_msg').click(function(){
     })
 })
 
-/*
+
 function receive_msg(){
     //document.write('aaa')
-    $.getJSON('/receive_msg', {}, function(data){
-        //username = data.split('_')[0]
-        //msg = data.split('_')[1]
-        //append_msg(username, msg)
-        $('#all-friends')[0].innerHTML += data
-        //alert(data)
-    });
-    //setTimeout("receive_msg();", 500)
+    $.post('/receive_msg').done(function(data){
+        username1 = data.split('_')[0]
+        msg1 = data.split('_')[1]
+        append_msg(username1, msg1)
+    })
+    auto_receive = setTimeout("receive_msg();", 500)
 }
-*/
+
 

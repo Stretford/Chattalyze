@@ -11,7 +11,7 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.setblocking(False)
 server.bind(('127.0.0.1', 8888))
 user_connections = {}
-pending_msg = {}
+pending_msg = {}      #{'to_id': [{'from_id'|'from_name'|'msg'}, {...}]}
 TOKEN = {}
 USERS = DB.get_users()
 
@@ -102,10 +102,11 @@ def run():
                             s.send('authentication failed')
                         else:
                             msg = decode['msg']
+                            temp = {'from_id': userid_received, 'from_name': userid_received, 'msg': msg}
                             if to in pending_msg:
-                                pending_msg[to].append(msg)
+                                pending_msg[to].append(temp)
                             else:
-                                pending_msg[to] = [msg]
+                                pending_msg[to] = [temp]
                             print "pending messages: ", pending_msg
 
                     message_queues[s].put(data)
@@ -126,10 +127,11 @@ def run():
                 for k, v in user_connections.items():
                     if v[0] == s.getpeername()[0] and v[1] == s.getpeername()[1]:
                         if k in pending_msg:
-                            msgs = pending_msg[k]
-                            for msg in msgs:
-                                s.send(msg)
-                                print "sending ", msg, " to ", s.getpeername()
+                            pm = pending_msg[k]
+                            for msg in pm:
+                                temp = json.dumps({'senderid': msg['from_id'], 'sendername': msg['from_name'], 'msg': msg['msg']})
+                                s.send(temp)
+                                print "sending ", temp, " to ", s.getpeername()
                             del pending_msg[k]
                         else:
                             pass

@@ -8,7 +8,7 @@ app = Flask(__name__)
 LOGGER = {}
 FRIENDS = []
 TOKEN = ''
-RECEIVED_DATA = []
+RECEIVED_DATA = {}  #'sender_id': [{'sender_name'|'msg'}]
 ADDR = ('localhost', 8888)
 LOCAL_RECEIVING_PORTAL = ()
 
@@ -58,10 +58,17 @@ def index():
     html = render_template('index.html', friends=FRIENDS, logger=LOGGER, token=TOKEN)
     return html
 
-@app.route('/receive_msg')
+@app.route('/receive_msg', methods=['GET', 'POST'])
 def receive_msg():
-    return "Stretford_hello!"
-    #return render_template('test.html')
+    if request.method == 'POST':
+        if RECEIVED_DATA:
+            for k, v in RECEIVED_DATA.items():
+                for row in v:
+                    sender_id = k
+                    sender_name = row['sender_name']
+                    msg = row['msg']
+                    temp = json.dumps(msg)
+            return temp
 
 
 def asyn_receive(token, useless):
@@ -75,7 +82,15 @@ def asyn_receive(token, useless):
     while aaa:
         data = s.recv(1024)
         if data:
-            RECEIVED_DATA.append(data)
+            data = str(json.loads(data))
+            sender_id = data['senderid']
+            sender_name = data['sendername']
+            msg = data['msg']
+            temp = {'sender_name': sender_name, 'msg': msg}
+            if not sender_id in RECEIVED_DATA:
+                RECEIVED_DATA[sender_id] = [temp]
+            else:
+                RECEIVED_DATA[sender_id].append(temp)
             print "received from server:", data
 
 
