@@ -13,6 +13,7 @@ server.bind(('127.0.0.1', 8888))
 user_connections = {}
 pending_msg = {}
 TOKEN = {}
+USERS = DB.get_users()
 
 '''
 def send_data(addr, msg, sender, receiver):
@@ -93,7 +94,9 @@ def run():
                         token_received = token.split('_')[0]
                         userid_received = token.split('_')[2]
                         username_received = token.split('_')[1]
-                        if TOKEN[str(userid_received)] != token_received:
+                        to_token_received = decode['to_token']
+                        to_token = USERS[str(userid_received)][1]
+                        if TOKEN[str(userid_received)] != token_received or to_token != to_token_received:
                             s.send('authentication failed')
                         else:
                             to = str(decode['to'])
@@ -118,6 +121,14 @@ def run():
                     del message_queues[s]
 
         for s in writable:
+            if pending_msg.items().__len__() > 0:
+                for k, v in user_connections.items():
+                    if v[0] == s.getpeername()[0] and v[1] == s.getpeername()[1]:
+                        msgs = pending_msg[k]
+                        for msg in msgs:
+                            s.send(msg)
+                            print "sending ", msg, " to ", s.getpeername()
+                        del pending_msg[k]
             '''
             try:
                 next_msg = message_queues[s].get_nowait()

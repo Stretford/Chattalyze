@@ -45,7 +45,7 @@ def verify(username, password):
 
 
 def get_friends(user):
-    sqlstr = "select id,username from users where id in(select user1 from relations where user2 = " + str(user) + " union select user2 from relations where user1 = " + str(user) + ")"
+    sqlstr = "select id,username,token from users where id in(select user1 from relations where user2 = " + str(user) + " union select user2 from relations where user1 = " + str(user) + ")"
     result = query(sqlstr)
     tmp = json.dumps(result[0])
     #result = json.loads(tmp)
@@ -53,9 +53,19 @@ def get_friends(user):
     return result
 
 
+def get_users():
+    ds = query("select * from users")
+    #ds = json.loads(json.dumps(ds[0]))
+    result = {}
+    for row in ds:
+        result[str(row[0])] = (row[1], row[3])
+    return result
+
+
+
 v = (u'127.0.0.1', 56955)
 c = ('127.0.0.1', 56958)
-print (v == c)
+print get_users()
 
 
 

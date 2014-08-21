@@ -47,7 +47,8 @@ def index():
         print 'here'
         msg = request.form['msg']
         to = request.form['to']
-        data = {'function': 'send', 'token': TOKEN, 'msg': msg, 'to': to}
+        to_token = request.form['to_token']
+        data = {'function': 'send', 'token': TOKEN, 'msg': msg, 'to': to, 'to_token': to_token}
         data = json.dumps(data)
         print "before sending:", data
         temp = asyn.ds_asyncore(ADDR, callback, data, timeout=5)

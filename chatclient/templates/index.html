@@ -64,7 +64,7 @@
         <button class="uk-button uk-button-primary" data-uk-toggle="{target:'#all-friends'}" style="width: 210px">All Friends</button>
             <div class="ui vertical menu" id="all-friends">
             {% for x in range(0, friends.__len__() - 1) %}
-              <a id="{{ friends[x][0] }}" class="item chatter" > {{ friends[x][1] }} <div class="ui label red">51</div>
+              <a id="{{ friends[x][2] }}_{{ friends[x][0] }}" class="item chatter" > {{ friends[x][1] }} <div class="ui label red">51</div>
               </a>
             {% endfor %}
             </div>

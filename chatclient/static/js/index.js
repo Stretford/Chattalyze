@@ -33,13 +33,16 @@ $('#send_msg').click(function(){
     var username = $('#online-friends')[0].className.split('_')[1]
     var time = new Date()
     var str = username + " (" + time.getHours() + ":" + time.getMinutes() + ") :" + $('#input')[0].value
+    var receiver = $('.uk-button-success.chatter')[0].id
+    var to = receiver.split('_')[1]
+    var to_token = receiver.split('_')[0]
     /*var p = document.createElement("div")
     p.innerHTML = str
     document.getElementById('history').appendChild(p)
     //$('.ui.large.message').html($('.ui.large.message').html() + str)
     */
     $('#history').append("<div>" + str + "</div")
-    msg = {msg: $('#input')[0].value, to:userid}
+    msg = {msg: $('#input')[0].value, to:to, to_token:to_token}
     $('#input')[0].value = ''
     $(this).addClass('disabled')
 
