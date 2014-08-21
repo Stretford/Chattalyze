@@ -14,3 +14,4 @@ $('#login').click(function(){
 $('#signup').click(function(){
     $('.modal').modal('show')
 })
+

@@ -94,12 +94,13 @@ def run():
                         token_received = token.split('_')[0]
                         userid_received = token.split('_')[2]
                         username_received = token.split('_')[1]
+                        to = str(decode['to'])
                         to_token_received = decode['to_token']
-                        to_token = USERS[str(userid_received)][1]
+                        to_token = USERS[to][1]
+                        print to_token, to_token_received
                         if TOKEN[str(userid_received)] != token_received or to_token != to_token_received:
                             s.send('authentication failed')
                         else:
-                            to = str(decode['to'])
                             msg = decode['msg']
                             if to in pending_msg:
                                 pending_msg[to].append(msg)
@@ -124,11 +125,14 @@ def run():
             if pending_msg.items().__len__() > 0:
                 for k, v in user_connections.items():
                     if v[0] == s.getpeername()[0] and v[1] == s.getpeername()[1]:
-                        msgs = pending_msg[k]
-                        for msg in msgs:
-                            s.send(msg)
-                            print "sending ", msg, " to ", s.getpeername()
-                        del pending_msg[k]
+                        if k in pending_msg:
+                            msgs = pending_msg[k]
+                            for msg in msgs:
+                                s.send(msg)
+                                print "sending ", msg, " to ", s.getpeername()
+                            del pending_msg[k]
+                        else:
+                            pass
             '''
             try:
                 next_msg = message_queues[s].get_nowait()

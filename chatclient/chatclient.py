@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 import asyn
 import socket
-import json
+import json, time
 import select, thread
 
 app = Flask(__name__)
@@ -58,6 +58,10 @@ def index():
     html = render_template('index.html', friends=FRIENDS, logger=LOGGER, token=TOKEN)
     return html
 
+@app.route('/receive_msg')
+def receive_msg():
+    return "Stretford_hello!"
+    #return render_template('test.html')
 
 
 def asyn_receive(token, useless):
