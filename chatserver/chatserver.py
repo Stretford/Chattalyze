@@ -14,6 +14,7 @@ user_connections = {}
 PENDING_MSG = {}      #{'to_id': [{'from_id'|'from_name'|'msg'}, {...}]}
 TOKEN = {}
 USERS = DB.get_users()
+CONNECTIONS = []
 
 '''
 def send_data(addr, msg, sender, receiver):
@@ -51,6 +52,7 @@ def run():
                 #connection.send('ready for connection')
                 inputs.append(connection)
                 message_queues[connection] = Queue.Queue()
+
             else:
                 transfer_message(s)
 
@@ -59,10 +61,15 @@ def run():
                     print "received:", data, "from ", s.getpeername()
                     try:
                         decode = json.loads(data)
+                        print "json loaded:", decode
                     except:
-                        response = handshake(data)
-                        s.send(response)
-                        print "websocket response:", response
+                        if not s.getpeername() in CONNECTIONS:
+                            handshake(s, data)
+                            CONNECTIONS.append(s.getpeername())
+                        else:
+                            raw_data = parse_data(data)
+                            print "parsed:", raw_data
+                            s.send(encaps_data(raw_data))
                         continue
                     function = decode['function']
 
@@ -169,20 +176,61 @@ def transfer_message(s):
                             pass
 
 
-def handshake(data):
+def handshake(s, data):
     key = None
     if not len(data):
-        return '-1'
+        return encaps_data('aa')
     for line in data.split('\r\n\r\n')[0].split('\r\n')[1:]:
         k, v = line.split(': ')
         if k == 'Sec-WebSocket-Key':
             key = base64.b64encode(hashlib.sha1(v + '258EAFA5-E914-47DA-95CA-C5AB0DC85B11').digest())
     if not key:
-        return '-1'
+        return encaps_data('aa')
     response = 'HTTP/1.1 101 Switching Protocols\r\n'\
                'Upgrade: websocket\r\n'\
                'Connection: Upgrade\r\n'\
                'Sec-WebSocket-Accept:' + key + '\r\n\r\n'
-    return response
+    s.send(response)
+    print "websocket response:", response
+
+
+
+def parse_data(msg):
+    code_length = ord(msg[1]) & 127
+
+    if code_length == 126:
+        masks = msg[4:8]
+        data = msg[8:]
+    elif code_length == 127:
+        masks = msg[10:14]
+        data = msg[14:]
+    else:
+        masks = msg[2:6]
+        data = msg[6:]
+
+    i = 0
+    raw_str = ''
+
+    for d in data:
+        raw_str += chr(ord(d) ^ ord(masks[i%4]))
+        i += 1
+    return raw_str
+
+
+def encaps_data(raw_str):
+    back_str = []
+
+    back_str.append('\x81')
+    data_length = len(raw_str)
+
+    if data_length < 125:
+        back_str.append(chr(data_length))
+    else:
+        back_str.append(chr(126))
+        back_str.append(chr(data_length >> 8))
+        back_str.append(chr(data_length & 0xFF))
+
+    back_str = "".join(back_str) + raw_str
+    return back_str
 
 run()

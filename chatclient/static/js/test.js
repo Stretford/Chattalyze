@@ -2,18 +2,26 @@
  * Created by stretford on 8/21/14.
  */
 
+var sock;
+var host = "ws://localhost:8888/";
+
+
 $(function(){
-  var host = "ws://localhost:8888/";
   try{
     sock = new WebSocket(host);
-    sock.onopen    = function(msg){ ; };
-    sock.onmessage = function(msg){ log(msg.data); };
-    sock.onclose   = function(msg){ log("Lose Connection!"); };
+    sock.onopen    = function(msg){ alert('OnOpen!') };
+    sock.onmessage = function(msg){ document.write(msg.data) };
+
   }
   catch(ex){ alert(ex) }
-    sock.send('Hi!')
+    //sock.send('Hi!')
 })
 
+$('#send').click(function(){
+    //sock.onclose   = function(msg){ alert('close') };
+    sock.send('aaaaaaa!')
+    //sock.close()
+})
 
 
 
