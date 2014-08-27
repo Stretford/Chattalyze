@@ -62,13 +62,26 @@ def index():
 def receive_msg():
     if request.method == 'POST':
         if RECEIVED_DATA:
+            print "RECEIVED_DATA:", RECEIVED_DATA
             for k, v in RECEIVED_DATA.items():
-                for row in v:
+                temp = v[0]
+                #temp['sender_id'] = k
+                del RECEIVED_DATA[k]
+                result = k + '_' + temp['sender_name'] + '_' + temp['msg']
+                print "post:", result
+                return result
+                '''for row in v:
                     sender_id = k
                     sender_name = row['sender_name']
                     msg = row['msg']
-                    temp = json.dumps(msg)
-            return temp
+                    temp = json.dumps(msg)'''
+    return ''
+
+@app.route('/test', methods=['GET', 'POST'])
+def test():
+    if request.method == 'POST':
+        return json.dumps({'a': '123', 'b': '234'})
+    return render_template('test.html')
 
 
 def asyn_receive(token, useless):
@@ -82,7 +95,7 @@ def asyn_receive(token, useless):
     while aaa:
         data = s.recv(1024)
         if data:
-            data = str(json.loads(data))
+            data = json.loads(data)
             sender_id = data['senderid']
             sender_name = data['sendername']
             msg = data['msg']
@@ -91,7 +104,6 @@ def asyn_receive(token, useless):
                 RECEIVED_DATA[sender_id] = [temp]
             else:
                 RECEIVED_DATA[sender_id].append(temp)
-            print "received from server:", data
 
 
 

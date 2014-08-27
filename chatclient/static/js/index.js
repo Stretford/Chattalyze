@@ -69,9 +69,14 @@ $('#send_msg').click(function(){
 function receive_msg(){
     //document.write('aaa')
     $.post('/receive_msg').done(function(data){
-        username1 = data.split('_')[0]
-        msg1 = data.split('_')[1]
-        append_msg(username1, msg1)
+        if(data != '')
+        {
+            //append_msg(data.sender_name, data.msg)
+            append_msg(data)
+        }
+        //username1 = data.sender_name
+        //msg1 = data.msg
+        //append_msg(username1, msg1)
     })
     auto_receive = setTimeout("receive_msg();", 500)
 }

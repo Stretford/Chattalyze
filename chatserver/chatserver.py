@@ -3,7 +3,7 @@ import select
 import Queue
 import json
 import DB
-import hashlib, time
+import hashlib, time, base64
 
 __author__ = 'stretford'
 
@@ -11,7 +11,7 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.setblocking(False)
 server.bind(('127.0.0.1', 8888))
 user_connections = {}
-pending_msg = {}      #{'to_id': [{'from_id'|'from_name'|'msg'}, {...}]}
+PENDING_MSG = {}      #{'to_id': [{'from_id'|'from_name'|'msg'}, {...}]}
 TOKEN = {}
 USERS = DB.get_users()
 
@@ -52,19 +52,18 @@ def run():
                 inputs.append(connection)
                 message_queues[connection] = Queue.Queue()
             else:
-                print "user_connections:", user_connections
-                for k, v in user_connections.items():
-                    print v, s.getpeername()
-                    if v == s.getpeername():
-                        msgs = pending_msg[v]
-                        for msg in msgs:
-                            s.send(msg)
+                transfer_message(s)
 
-                print "s:", s.getpeername()
                 data = s.recv(1024)
                 if data:
                     print "received:", data, "from ", s.getpeername()
-                    decode = json.loads(data)
+                    try:
+                        decode = json.loads(data)
+                    except:
+                        response = handshake(data)
+                        s.send(response)
+                        print "websocket response:", response
+                        continue
                     function = decode['function']
 
                     if function == 'login':
@@ -102,12 +101,12 @@ def run():
                             s.send('authentication failed')
                         else:
                             msg = decode['msg']
-                            temp = {'from_id': userid_received, 'from_name': userid_received, 'msg': msg}
-                            if to in pending_msg:
-                                pending_msg[to].append(temp)
+                            temp = {'from_id': userid_received, 'from_name': username_received, 'msg': msg}
+                            if to in PENDING_MSG:
+                                PENDING_MSG[to].append(temp)
                             else:
-                                pending_msg[to] = [temp]
-                            print "pending messages: ", pending_msg
+                                PENDING_MSG[to] = [temp]
+                            print "pending messages: ", PENDING_MSG
 
                     message_queues[s].put(data)
                     if s not in outputs:
@@ -123,18 +122,7 @@ def run():
                     del message_queues[s]
 
         for s in writable:
-            if pending_msg.items().__len__() > 0:
-                for k, v in user_connections.items():
-                    if v[0] == s.getpeername()[0] and v[1] == s.getpeername()[1]:
-                        if k in pending_msg:
-                            pm = pending_msg[k]
-                            for msg in pm:
-                                temp = json.dumps({'senderid': msg['from_id'], 'sendername': msg['from_name'], 'msg': msg['msg']})
-                                s.send(temp)
-                                print "sending ", temp, " to ", s.getpeername()
-                            del pending_msg[k]
-                        else:
-                            pass
+            transfer_message(s)
             '''
             try:
                 next_msg = message_queues[s].get_nowait()
@@ -166,5 +154,35 @@ def run():
     sock.close()
     '''
 
+def transfer_message(s):
+    if PENDING_MSG.items().__len__() > 0:
+                for k, v in user_connections.items():
+                    if v[0] == s.getpeername()[0] and v[1] == s.getpeername()[1]:
+                        if k in PENDING_MSG:
+                            pm = PENDING_MSG[k]
+                            for msg in pm:
+                                temp = json.dumps({'senderid': msg['from_id'], 'sendername': msg['from_name'], 'msg': msg['msg']})
+                                s.send(temp)
+                                print "sending ", temp, " to ", s.getpeername()
+                            del PENDING_MSG[k]
+                        else:
+                            pass
+
+
+def handshake(data):
+    key = None
+    if not len(data):
+        return '-1'
+    for line in data.split('\r\n\r\n')[0].split('\r\n')[1:]:
+        k, v = line.split(': ')
+        if k == 'Sec-WebSocket-Key':
+            key = base64.b64encode(hashlib.sha1(v + '258EAFA5-E914-47DA-95CA-C5AB0DC85B11').digest())
+    if not key:
+        return '-1'
+    response = 'HTTP/1.1 101 Switching Protocols\r\n'\
+               'Upgrade: websocket\r\n'\
+               'Connection: Upgrade\r\n'\
+               'Sec-WebSocket-Accept:' + key + '\r\n\r\n'
+    return response
 
 run()

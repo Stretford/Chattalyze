@@ -73,8 +73,11 @@ def get_users():
 
 
 
-a = {'a': 123}
-print json.loads(json.dumps(a))
+a = {u'1': [{'sender_name': u'sam', 'msg': u'fff'}]}
+temp = a['1'][0]
+temp['sender_id'] = '23'
+del a['1']
+#print temp
 
 
 
