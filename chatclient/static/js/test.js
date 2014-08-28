@@ -13,7 +13,7 @@ $('#send').click(function(){
     })
 })*/
 
-    var wsUri = "ws://localhost:8889/";
+    var wsUri = "ws://localhost:8888/";
     var output;
 
     function init() {

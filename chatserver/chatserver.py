@@ -69,7 +69,8 @@ def run():
                         else:
                             raw_data = parse_data(data)
                             print "parsed:", raw_data
-                            s.send(encaps_data(raw_data))
+                            s.send(encaps_data('test from server'))
+                            #s.send(encaps_data(raw_data))
                         continue
                     function = decode['function']
 
