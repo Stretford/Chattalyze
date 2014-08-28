@@ -15,6 +15,7 @@ $('#send').click(function(){
 
     var wsUri = "ws://localhost:8888/";
     var output;
+    var websocket;
 
     function init() {
         output = document.getElementById("output");
@@ -68,6 +69,17 @@ $('#send').click(function(){
     }
 
     window.addEventListener("load", init, false);
+
+window.onbeforeunload=function(){
+    try{
+        websocket.send('quit');
+        websocket.close();
+        websocket=null;
+    }
+    catch(ex){
+        writeToScreen(ex)
+    }
+};
 
 
 

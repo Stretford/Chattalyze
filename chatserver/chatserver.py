@@ -3,15 +3,15 @@ import select
 import Queue
 import json
 import DB
-import hashlib, time, base64
+import hashlib, time, base64, thread
 
 __author__ = 'stretford'
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.setblocking(False)
 server.bind(('127.0.0.1', 8888))
-user_connections = {}
-PENDING_MSG = {}      #{'to_id': [{'from_id'|'from_name'|'msg'}, {...}]}
+user_connections = {}   #{ 'to_id': s.getpeername() }
+PENDING_MSG = {}      #{ 'to_id': [{'from_id'|'from_name'|'msg'}, {...}] }
 TOKEN = {}
 USERS = DB.get_users()
 CONNECTIONS = []
@@ -54,7 +54,9 @@ def run():
                 message_queues[connection] = Queue.Queue()
 
             else:
-                transfer_message(s)
+                #transfer_message(s)
+
+                #transfer pending msg to websocket client in list
 
                 data = s.recv(1024)
                 if data:
@@ -69,8 +71,7 @@ def run():
                         else:
                             raw_data = parse_data(data)
                             print "parsed:", raw_data
-                            s.send(encaps_data('test from server'))
-                            #s.send(encaps_data(raw_data))
+                            #s.send(encaps_data('test from server'))
                         continue
                     function = decode['function']
 
@@ -177,6 +178,7 @@ def transfer_message(s):
                             pass
 
 
+
 def handshake(s, data):
     key = None
     if not len(data):
@@ -234,5 +236,14 @@ def encaps_data(raw_str):
 
     back_str = "".join(back_str) + raw_str
     return back_str
+
+'''
+def websocket_send(s, useless):
+    s.send(encaps_data('aa'))
+    time.sleep(1)
+    s.send(encaps_data('bb'))
+    time.sleep(1)
+    s.send(encaps_data('cc'))
+    time.sleep(1)'''
 
 run()

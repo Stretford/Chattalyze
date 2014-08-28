@@ -88,8 +88,14 @@ def test():
         return msg
     return render_template('test.html')
 
+
+@app.route('/sample')
+def sample():
+    return render_template('sample.html')
+
+
 '''
-def asyn_receive(token, useless):
+def asyn_receive(token, useless): `
     global LOCAL_RECEIVING_PORTAL
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect(SERVER_ADDR)

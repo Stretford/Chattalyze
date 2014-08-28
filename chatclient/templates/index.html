@@ -3,9 +3,9 @@
 <head>
 
     <title>Chattalyze</title>
-
+    <script src="/static/js/jquery-1.11.0.js"></script>
 </head>
-<body>
+<body onload="init()">
 
 
   <div class="ui fixed transparent inverted main menu">
@@ -88,7 +88,7 @@
 
         <div class="ui fluid action input">
           <input id="input" type="text" placeholder="Chat...">
-          <div id="send_msg" class="ui button" >Send</div>
+          <div id="send_msg" class="ui button" onclick="send()" >Send</div>
         </div>
 
     </div>
@@ -102,6 +102,5 @@
     <script src="/static/semantic/javascript/semantic.js"></script>
     <script src="/static/js/index.js"></script>
     <script src="/static/js/websocket.js"></script>
-    <script src="/static/UIkit/js/uikit.min.js"></script>
 </body>
 </html>

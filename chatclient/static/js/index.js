@@ -34,10 +34,6 @@ function append_msg(username, msg){
 
 }
 
-$('#cancel').click(function(){
-    clearTimeout(auto_receive)
-    alert('cancelled!')
-})
 
 /*
 $('#send_msg').click(function(){
