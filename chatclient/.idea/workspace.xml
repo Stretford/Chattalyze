@@ -13,7 +13,7 @@
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/chatclient$asyn.coverage" NAME="asyn Coverage Results" MODIFIED="1408605681200" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/chatclient$chatclient.coverage" NAME="chatclient Coverage Results" MODIFIED="1409149050634" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/chatclient$chatclient.coverage" NAME="chatclient Coverage Results" MODIFIED="1409197421815" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -30,7 +30,7 @@
       <file leaf-file-name="chatclient.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/chatclient.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="83" column="0" selection-start="2832" selection-end="2832" vertical-scroll-proportion="0.0" vertical-offset="997" max-vertical-offset="1785">
+            <state line="86" column="33" selection-start="2963" selection-end="2963" vertical-scroll-proportion="0.0" vertical-offset="217" max-vertical-offset="1860">
               <folding />
             </state>
           </provider>
@@ -48,8 +48,15 @@
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="101" column="29" selection-start="3423" selection-end="3471" vertical-scroll-proportion="0.0" vertical-offset="1052" max-vertical-offset="1665">
-              <folding />
+            <state line="103" column="40" selection-start="3512" selection-end="3512" vertical-scroll-proportion="-9.265306" vertical-offset="1091" max-vertical-offset="1680">
+              <folding>
+                <element signature="n#style#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#button#0;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#button#1;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -57,7 +64,16 @@
       <file leaf-file-name="index.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="42" column="30" selection-start="744" selection-end="770" vertical-scroll-proportion="0.0" vertical-offset="720" max-vertical-offset="1350">
+            <state line="41" column="2" selection-start="801" selection-end="801" vertical-scroll-proportion="0.0" vertical-offset="352" max-vertical-offset="1260">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="websocket.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/static/js/websocket.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="14" column="26" selection-start="419" selection-end="419" vertical-scroll-proportion="0.33707866" vertical-offset="0" max-vertical-offset="623">
               <folding />
             </state>
           </provider>
@@ -72,10 +88,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="test.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/test.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="30" selection-start="135" selection-end="135" vertical-scroll-proportion="-0.42570952" vertical-offset="360" max-vertical-offset="1170">
+            <state line="9" column="0" selection-start="187" selection-end="187" vertical-scroll-proportion="-5.625" vertical-offset="0" max-vertical-offset="360">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/js/test.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="15" column="36" selection-start="379" selection-end="379" vertical-scroll-proportion="0.0" vertical-offset="45" max-vertical-offset="1155">
               <folding />
             </state>
           </provider>
@@ -85,24 +110,6 @@
         <entry file="file://$PROJECT_DIR$/static/js/login.js">
           <provider selected="true" editor-type-id="text-editor">
             <state line="17" column="0" selection-start="373" selection-end="373" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="345">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/js/test.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="20" column="6" selection-start="357" selection-end="357" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="495">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="server.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/js/server.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="44" column="3" selection-start="1279" selection-end="1279" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="750">
               <folding />
             </state>
           </provider>
@@ -122,13 +129,15 @@
         <option value="$PROJECT_DIR$/asyn.py" />
         <option value="$PROJECT_DIR$/static/js/login.js" />
         <option value="$PROJECT_DIR$/templates/login.html" />
-        <option value="$PROJECT_DIR$/templates/index.html" />
         <option value="$PROJECT_DIR$/static/js/json.js" />
-        <option value="$PROJECT_DIR$/chatclient.py" />
-        <option value="$PROJECT_DIR$/static/js/index.js" />
-        <option value="$PROJECT_DIR$/templates/test.html" />
         <option value="$PROJECT_DIR$/static/js/server.js" />
+        <option value="$PROJECT_DIR$/chatclient.py" />
+        <option value="$PROJECT_DIR$/templates/test.html" />
+        <option value="$PROJECT_DIR$/static/js/websocket.html" />
+        <option value="$PROJECT_DIR$/static/js/index.js" />
+        <option value="$PROJECT_DIR$/templates/index.html" />
         <option value="$PROJECT_DIR$/static/js/test.js" />
+        <option value="$PROJECT_DIR$/static/js/websocket.js" />
       </list>
     </option>
   </component>
@@ -163,7 +172,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -230,13 +238,14 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="recentsLimit" value="5" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../chatserver" />
     <property name="restartRequiresConfirmation" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../chatserver" />
     <property name="FullScreen" value="false" />
     <property name="DefaultHtmlFileTemplate" value="Html5" />
   </component>
@@ -354,9 +363,6 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
-      <method />
-    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -378,6 +384,9 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -556,9 +565,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/index.html">
+    <entry file="file://$PROJECT_DIR$/chatclient.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="101" column="29" selection-start="3423" selection-end="3471" vertical-scroll-proportion="0.0" vertical-offset="1052" max-vertical-offset="1665">
+        <state line="86" column="33" selection-start="2963" selection-end="2963" vertical-scroll-proportion="0.0" vertical-offset="922" max-vertical-offset="1860">
           <folding />
         </state>
       </provider>
@@ -566,27 +575,6 @@
     <entry file="file://$PROJECT_DIR$/templates/login.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="82" column="0" selection-start="2212" selection-end="2212" vertical-scroll-proportion="-36.833332" vertical-offset="346" max-vertical-offset="1350">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/chatclient.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="83" column="0" selection-start="2832" selection-end="2832" vertical-scroll-proportion="0.0" vertical-offset="1245" max-vertical-offset="1845">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/server.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="3" selection-start="1279" selection-end="1279" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="750">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/test.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="6" selection-start="357" selection-end="357" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="495">
           <folding />
         </state>
       </provider>
@@ -600,14 +588,42 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="30" selection-start="744" selection-end="770" vertical-scroll-proportion="0.0" vertical-offset="630" max-vertical-offset="1350">
+        <state line="41" column="2" selection-start="801" selection-end="801" vertical-scroll-proportion="0.0" vertical-offset="352" max-vertical-offset="1260">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="103" column="40" selection-start="3512" selection-end="3512" vertical-scroll-proportion="-9.265306" vertical-offset="1091" max-vertical-offset="1680">
+          <folding>
+            <element signature="n#style#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#0;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#1;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/test.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="30" selection-start="135" selection-end="135" vertical-scroll-proportion="-0.42570952" vertical-offset="360" max-vertical-offset="1170">
+        <state line="9" column="0" selection-start="187" selection-end="187" vertical-scroll-proportion="-5.625" vertical-offset="0" max-vertical-offset="360">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="36" selection-start="379" selection-end="379" vertical-scroll-proportion="0.0" vertical-offset="45" max-vertical-offset="1155">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/websocket.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="26" selection-start="419" selection-end="419" vertical-scroll-proportion="0.33707866" vertical-offset="0" max-vertical-offset="623">
           <folding />
         </state>
       </provider>

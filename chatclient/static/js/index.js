@@ -39,7 +39,7 @@ $('#cancel').click(function(){
     alert('cancelled!')
 })
 
-
+/*
 $('#send_msg').click(function(){
     //$('.ui.large.message').text($('.ui.large.message').text().replace('No Chatting History...', ''))
     var userid = $('#online-friends')[0].className.split('_')[2]
@@ -51,11 +51,7 @@ $('#send_msg').click(function(){
     var receiver = $('.uk-button-success.chatter')[0].id
     var to = receiver.split('_')[1]
     var to_token = receiver.split('_')[0]
-    /*var p = document.createElement("div")
-    p.innerHTML = str
-    document.getElementById('history').appendChild(p)
-    //$('.ui.large.message').html($('.ui.large.message').html() + str)
-    */
+
     //$('#history').append("<div>" + str + "</div")
     msg = {msg: $('#input')[0].value, to:to, to_token:to_token}
     $('#input')[0].value = ''
@@ -79,6 +75,4 @@ function receive_msg(){
         //append_msg(username1, msg1)
     })
     auto_receive = setTimeout("receive_msg();", 500)
-}
-
-
+}*/

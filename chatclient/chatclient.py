@@ -9,7 +9,7 @@ LOGGER = {}
 FRIENDS = []
 TOKEN = ''
 RECEIVED_DATA = {}  #'sender_id': [{'sender_name'|'msg'}]
-ADDR = ('localhost', 8888)
+SERVER_ADDR = ('localhost', 8888)
 LOCAL_RECEIVING_PORTAL = ()
 
 @app.route('/', methods=['GET', 'POST'])
@@ -23,7 +23,7 @@ def login():
         data = {'function': 'login', 'username': username, 'password': password}
         data = json.dumps(data)
         print data
-        temp = asyn.ds_asyncore(ADDR, callback, data, timeout=5)
+        temp = asyn.ds_asyncore(SERVER_ADDR, callback, data, timeout=5)
         print temp
         reply = json.loads(temp)
         print reply
@@ -35,7 +35,7 @@ def login():
             userid = FRIENDS[-1][0]
             LOGGER['userid'] = userid
             TOKEN = reply['token'] + '_' + username + '_' + str(userid)
-            thread.start_new_thread(asyn_receive, (TOKEN, ''))
+            #thread.start_new_thread(asyn_receive, (TOKEN, ''))
             return 'logged in'
 
     html = render_template('login.html')
@@ -51,7 +51,7 @@ def index():
         data = {'function': 'send', 'token': TOKEN, 'msg': msg, 'to': to, 'to_token': to_token}
         data = json.dumps(data)
         print "before sending:", data
-        temp = asyn.ds_asyncore(ADDR, callback, data, timeout=5)
+        temp = asyn.ds_asyncore(SERVER_ADDR, callback, data, timeout=5)
         print(temp)
         return temp
 
@@ -77,17 +77,22 @@ def receive_msg():
                     temp = json.dumps(msg)'''
     return ''
 
+
 @app.route('/test', methods=['GET', 'POST'])
 def test():
     if request.method == 'POST':
-        return json.dumps({'a': '123', 'b': '234'})
+        msg = request.form['msg']
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect(SERVER_ADDR)
+        msg = {"function": "send"}
+        return msg
     return render_template('test.html')
 
-
+'''
 def asyn_receive(token, useless):
     global LOCAL_RECEIVING_PORTAL
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect(ADDR)
+    s.connect(SERVER_ADDR)
     msg = {"function": "appendADDR", "addr": s.getsockname(), "token": token}
     s.send(json.dumps(msg))
     print "listening at:", s.getsockname()
@@ -104,7 +109,7 @@ def asyn_receive(token, useless):
                 RECEIVED_DATA[sender_id] = [temp]
             else:
                 RECEIVED_DATA[sender_id].append(temp)
-
+'''
 
 
 

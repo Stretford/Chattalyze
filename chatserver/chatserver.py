@@ -196,6 +196,7 @@ def handshake(s, data):
 
 
 def parse_data(msg):
+    print "before parsing:", msg
     code_length = ord(msg[1]) & 127
 
     if code_length == 126:
